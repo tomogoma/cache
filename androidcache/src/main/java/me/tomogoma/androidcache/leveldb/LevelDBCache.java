@@ -70,7 +70,9 @@ public class LevelDBCache implements Cache {
                 db.put(kv.key, kv.value);
             } finally {
                 if (db != null) {
-                    db.close();
+                    try {
+                        db.close();
+                    } catch (IOException e) {/*empty*/}
                 }
             }
         }
@@ -92,12 +94,16 @@ public class LevelDBCache implements Cache {
                 db.write(batch);
             } finally {
 
-                if (db != null) {
-                    db.close();
+                if (batch != null) {
+                    try {
+                        batch.close();
+                    } catch (IOException e) {/*empty*/}
                 }
 
-                if (batch != null) {
-                    batch.close();
+                if (db != null) {
+                    try {
+                        db.close();
+                    } catch (IOException e) {/*empty*/}
                 }
             }
         }
@@ -114,7 +120,9 @@ public class LevelDBCache implements Cache {
                 db.delete(keyB);
             } finally {
                 if (db != null) {
-                    db.close();
+                    try {
+                        db.close();
+                    } catch (IOException e) {/*empty*/}
                 }
             }
         }
@@ -136,12 +144,16 @@ public class LevelDBCache implements Cache {
                 db.write(batch);
             } finally {
 
-                if (db != null) {
-                    db.close();
+                if (batch != null) {
+                    try {
+                        batch.close();
+                    } catch (IOException e) {/*empty*/}
                 }
 
-                if (batch != null) {
-                    batch.close();
+                if (db != null) {
+                    try {
+                        db.close();
+                    } catch (IOException e) {/*empty*/}
                 }
             }
         }
@@ -159,7 +171,9 @@ public class LevelDBCache implements Cache {
                 return toString(val);
             } finally {
                 if (db != null) {
-                    db.close();
+                    try {
+                        db.close();
+                    } catch (IOException e) {/*empty*/}
                 }
             }
         }
@@ -184,11 +198,15 @@ public class LevelDBCache implements Cache {
                     storables.put(key, value);
                 }
             } finally {
-                if (db != null) {
-                    db.close();
-                }
                 if (iterator != null) {
-                    iterator.close();
+                    try {
+                        iterator.close();
+                    } catch (IOException e) {/*empty*/}
+                }
+                if (db != null) {
+                    try {
+                        db.close();
+                    } catch (IOException e) {/*empty*/}
                 }
             }
         }
