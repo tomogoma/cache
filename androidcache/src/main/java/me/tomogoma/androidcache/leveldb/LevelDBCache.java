@@ -247,6 +247,16 @@ public class LevelDBCache implements Cache {
     private DB openDb() throws IOException {
         Options options = new Options();
         options.createIfMissing(true);
-        return factory.open(mDbFile, options);
+        while (true) {
+            try {
+                return factory.open(mDbFile, options);
+            } catch (IOException e) {
+                String message = e.getMessage();
+                if (message.contains("EAGAIN") || message.contains("EWOULDBLOCK")) {
+                    continue;
+                }
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
